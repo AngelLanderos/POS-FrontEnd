@@ -1,0 +1,32 @@
+<div
+  class="p-4 mt-25 mr-4 sm:ml-2 col-span-1 bg-neutral-100 border-dashed rounded-sm flex flex-col h-[calc(100vh-7rem)]">
+  <!-- Product Summary -->
+  <h1 class="text-xl font-semibold mb-3 text-black text-center">Resumen de Orden</h1>
+
+  <!-- Contenido scrolleable -->
+  <div class="flex-1 overflow-y-auto">
+    <!-- Product Summary -->
+
+   <order-item></order-item>
+   <order-item></order-item>
+   <order-item></order-item>
+   <order-item></order-item>
+
+  </div>
+
+
+
+    <div class="w-full bg-gray-200 h-12 grid grid-cols-2 rounded-md shadow-lg border-indigo-500">
+      <p class="text-xl font-bold text-black self-center ml-4">Total</p>
+      <div class="badge badge-neutral badge-xl justify-self-end self-center mr-2">$12000</div>
+    </div>
+
+      <div class="w-full bg-gray-200 h-12 grid grid-cols-3 rounded-md shadow-lg border-indigo-500 mt-3">
+      <p class="text-xl font-bold text-black self-center ml-4 col-span-2">Descuento</p>
+      <input type="number" placeholder="Descuento" class="input bg-stone-300 self-center mr-2"/>
+    </div>
+
+
+    <div class="btn w-full h-15 self-end text-xl bg-blue-700 mt-5 border-none">Pagar</div>
+    <div class="btn w-full h-15 self-end text-xl bg-green-800 mt-3 border-none">Confirmar orden <span
+        class="justify-self-end">$200</span></div>
