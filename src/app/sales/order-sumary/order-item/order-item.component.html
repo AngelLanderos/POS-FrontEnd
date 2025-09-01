@@ -1,29 +1,49 @@
- <div class="grid grid-cols-16 h-12 bg-stone-200 borded rounded shadow mb-1">
+<div class="grid grid-cols-16 h-9 bg-stone-200 borded rounded shadow mb-1">
 
-      <div class="ml-1 mt-2">
-        <button class="hover:bg-neutral-400 rounded-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
-            <g fill="#2d7101" fill-rule="evenodd" clip-rule="evenodd" stroke-width="0.5" stroke="#2d7101">
-              <path
-                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12m10-8a8 8 0 1 0 0 16a8 8 0 0 0 0-16" />
-              <path d="M13 7a1 1 0 1 0-2 0v4H7a1 1 0 1 0 0 2h4v4a1 1 0 1 0 2 0v-4h4a1 1 0 1 0 0-2h-4z" />
-            </g>
-          </svg></button>
-      </div>
+  <div class="ml-1 self-center">
+    <button class="hover:bg-neutral-400 rounded-lg" (click)="updateQuantity(1)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+        <g fill="#2d7101" fill-rule="evenodd" clip-rule="evenodd" stroke-width="0.5" stroke="#2d7101">
+          <path
+            d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12m10-8a8 8 0 1 0 0 16a8 8 0 0 0 0-16" />
+          <path d="M13 7a1 1 0 1 0-2 0v4H7a1 1 0 1 0 0 2h4v4a1 1 0 1 0 2 0v-4h4a1 1 0 1 0 0-2h-4z" />
+        </g>
+      </svg></button>
+  </div>
 
-      <div class="mx-3 mt-2 text-center text-black text-xl font-bold">10</div>
+  <div class="ml-4 self-center text-center text-black text-md font-bold">{{product().quantity}}</div>
 
-      <div class="ml-4 mt-2">
-        <button class="hover:bg-neutral-400 rounded-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 16 16">
-            <path fill="none" stroke="#810A0A" d="M4 8h8m2.5 0a6.5 6.5 0 1 1-13 0a6.5 6.5 0 0 1 13 0Z"
-              stroke-width="1" />
-          </svg></button>
-      </div>
+  <div class="ml-3 mt-1 self-center">
+    <button class="hover:bg-neutral-400 rounded-lg" (click)="updateQuantity(-1)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
+        <path fill="none" stroke="#810A0A" d="M4 8h8m2.5 0a6.5 6.5 0 1 1-13 0a6.5 6.5 0 0 1 13 0Z" stroke-width="1" />
+      </svg></button>
+  </div>
 
-      <div class="col-span-10 ml-6 mt-2 text-black text-xl font-semibold">Mojito de Frutos rojos</div>
 
-      <!-- TODO -->
-      <!-- <div class="col-span-3 bg-red-500">Edit</div> -->
+  <div class="col-span-11 ml-6 mt-1 text-black text-md font-thin">{{product().name}} {{product().size | SizeText}} <span class="font-semibold">${{product().price}}</span></div>
 
+  <!-- TODO -->
+  <div class="col-span-1 mt-1">
+    <div class="ml-1 self-center">
+      <button class="hover:bg-neutral-400 rounded-lg" (click)="updateQuantity(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 28">
+          <path fill="#000"
+            d="M7.616 20q-.667 0-1.141-.475T6 18.386V6h-.5q-.213 0-.356-.144T5 5.499t.144-.356T5.5 5H9q0-.31.23-.54t.54-.23h4.46q.31 0 .54.23T15 5h3.5q.213 0 .356.144t.144.357t-.144.356T18.5 6H18v12.385q0 .666-.475 1.14t-1.14.475zm2.692-3q.213 0 .357-.144t.143-.356v-8q0-.213-.144-.356T10.307 8t-.356.144t-.143.356v8q0 .213.144.356q.144.144.356.144m3.385 0q.213 0 .356-.144t.143-.356v-8q0-.213-.144-.356Q13.904 8 13.692 8q-.213 0-.357.144t-.143.356v8q0 .213.144.356t.357.144"
+            stroke-width="0.5" stroke="#000" />
+        </svg></button>
     </div>
+  </div>
+
+  <!-- <div class="col-span-1 mt-1 ml-2">
+    <div class="ml-1 self-center">
+      <button class="hover:bg-neutral-400 rounded-lg" (click)="updateQuantity(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+          <path fill="#253c8e"
+            d="m14.06 9.02l.92.92L5.92 19H5v-.92zM17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83a.996.996 0 0 0 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z"
+            stroke-width="0.5" stroke="#253c8e" />
+        </svg></button>
+    </div>
+  </div> -->
+
+</div>

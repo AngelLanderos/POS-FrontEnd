@@ -2,7 +2,7 @@
 <sidebar></sidebar>
 
 <!-- Contenedor principal con grid y altura completa -->
-<div class="grid grid-cols-4 h-screen bg-gray-200 sm:ml-25">
+<div class="grid grid-cols-4 h-full bg-gray-200 sm:ml-25">
 
   <!-- Sección de productos -->
   <div class="col-span-3 flex flex-col mt-20 p-4">
@@ -27,15 +27,12 @@
 
     <!-- Grid de productos con scroll -->
     <div class="flex-1 overflow-y-auto mt-3 p-2">
-      <product-grid></product-grid>
+      <product-grid (newProduct)="productToAdd.set($event)"></product-grid>
     </div>
   </div>
 
   <!-- Resumen de orden con scroll independiente -->
 
-
-      <order-summary></order-summary>
-
-
+      <order-summary [newProduct]="productToAdd()"></order-summary>
 
 </div>
