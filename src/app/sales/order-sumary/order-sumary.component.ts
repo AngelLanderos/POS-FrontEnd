@@ -6,7 +6,6 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { ProductCardComponent } from '../product-card/product-card.component';
 import { OrderItemComponent } from './order-item/order-item.component';
 import { ItemUpdate, Product } from '../../interfaces/interfaces';
 import { CurrencyPipe } from '@angular/common';
@@ -18,64 +17,53 @@ import { CurrencyPipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderSumaryComponent {
-  newProduct = input.required<Product | null>({});
-  products = signal<Product[] | null>([]);
+  newProduct = input.required<Product | null>();
+  products = signal<Product[]>([]);
 
+  // ✅ Agregar producto
   addProductEffect = effect(() => {
     const product = this.newProduct();
 
     if (product) {
       this.products.update((current) => {
-        // Buscamos si ya existe
-        const index = current!.findIndex(
+        const index = current.findIndex(
           (p) => p.name === product.name && p.size === product.size
         );
 
         if (index !== -1) {
-          // Si existe, mapeamos y aumentamos la cantidad
-          return current!.map((p, i) =>
+          return current.map((p, i) =>
             i === index ? { ...p, quantity: p.quantity + product.quantity } : p
           );
         } else {
-          // Si no existe, lo agregamos al final
-          return [...current!, product];
+          return [...current, product];
         }
       });
     }
   });
 
+  // Eliminar productos con cantidad 0
   deleteProductEffect = effect(() => {
-    const updated = this.products();
-
-    const filtered = this.products()!.filter((p) => p.quantity > 0);
-
-    // Solo actualizamos si hubo algún cambio real
-    if (filtered.length !== updated!.length) {
-      this.products.set(filtered);
-    }
+    this.products.update((current) =>
+      current.filter((p) => p.quantity > 0)
+    );
   });
 
+  // ✅ Total siempre actualizado automáticamente
+  total = computed(() =>
+    this.products().reduce((acc, p) => acc + p.price * p.quantity, 0)
+  );
+
+  // ✅ Actualizar item sin mutar el array
   updateItem(updateItem: ItemUpdate) {
     this.products.update((current) => {
-      const findIndex = current!.findIndex(
-        (item) =>
-          item.name == updateItem.productName &&
-          item.size == updateItem.productSize
-      );
-
-      console.log(findIndex);
-
-      current![findIndex].quantity += updateItem.quantityUpdate;
-
-      if (current![findIndex].quantity == 0) {
-        current!.splice(findIndex, 1);
-      }
-
-      return current;
+      return current
+        .map((item) =>
+          item.name === updateItem.productName &&
+          item.size === updateItem.productSize
+            ? { ...item, quantity: item.quantity + updateItem.quantityUpdate }
+            : item
+        )
+        .filter((item) => item.quantity > 0); // 👈 limpieza directa aquí
     });
-  };
-
-  total = computed(() =>
-    this.products()!.reduce((acc, p) => acc + p.price * p.quantity, 0)
-  );
+  }
 }
