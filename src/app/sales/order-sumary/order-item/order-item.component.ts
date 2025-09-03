@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { Product,ItemUpdate } from '../../../interfaces/interfaces';
 import { SizeTextPipe } from '../../../Pipes/Size-text.pipe';
 
@@ -10,8 +10,11 @@ import { SizeTextPipe } from '../../../Pipes/Size-text.pipe';
 })
 export class OrderItemComponent {
 
+
   product = input.required<Product>();
-  itemUpdate = output<ItemUpdate>()
+  itemUpdate = output<ItemUpdate>();
+
+
 
   updateQuantity(quantityUpdate: number){
 
