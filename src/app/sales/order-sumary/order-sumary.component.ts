@@ -3,12 +3,14 @@ import {
   Component,
   computed,
   effect,
+  inject,
   input,
   signal,
 } from '@angular/core';
 import { OrderItemComponent } from './order-item/order-item.component';
 import { ItemUpdate, Product } from '../../interfaces/interfaces';
 import { CurrencyPipe } from '@angular/common';
+import { productCategoryService } from '../../services/productCategory.service';
 
 @Component({
   selector: 'order-summary',
@@ -17,6 +19,8 @@ import { CurrencyPipe } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderSumaryComponent {
+
+  productCategoryService = inject(productCategoryService);
   newProduct = input.required<Product | null>();
   products = signal<Product[]>([]);
 
@@ -65,5 +69,16 @@ export class OrderSumaryComponent {
         )
         .filter((item) => item.quantity > 0); // 👈 limpieza directa aquí
     });
+  };
+
+  test(){
+    this.productCategoryService.getProductCategories().subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 }
