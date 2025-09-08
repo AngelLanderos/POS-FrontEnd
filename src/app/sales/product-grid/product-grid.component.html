@@ -1,6 +1,6 @@
 <div class="grid grid-cols-6 gap-2 mt-3">
 
-@for (product of productCategory(); track $index) {
+@for (product of productCatalog(); track $index) {
 
   <product-card [currentProduct]="product" (newProduct)="addProduct($event)"></product-card>
 }
