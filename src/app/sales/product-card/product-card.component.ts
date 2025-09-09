@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { Product, Sizes } from '../../interfaces/interfaces';
+import { Product, ProductResponse, Sizes } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'product-card',
@@ -9,15 +9,15 @@ import { Product, Sizes } from '../../interfaces/interfaces';
 })
 export class ProductCardComponent {
 
-  currentProduct = input.required<Product>();
+  currentProduct = input.required<ProductResponse>();
   newProduct = output<Product>();
 
 
-  addProduct(product: Product, size: string) {
+  addProduct(product: ProductResponse, size: string) {
 
     let newProduct : Product = {
       name: product.name,
-      price: product.price,
+      price: product.base_price,
       size,
       quantity: 1
     }

@@ -2,37 +2,9 @@
 <sidebar></sidebar>
 
 <!-- Contenedor principal con grid y altura completa -->
-<div class="grid grid-cols-4 h-full bg-gray-200 sm:ml-18">
+<div>
 
   <!-- Sección de productos -->
-  <div class="col-span-3 flex flex-col mt-20 p-4">
-    <!-- Buscador -->
-    <label class="input w-full bg-neutral-300 shadow-xl">
-      <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="#000">
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.3-4.3"></path>
-        </g>
-      </svg>
-      <input type="search" class="grow text-slate-500 text-center" placeholder="Busque un producto" />
-    </label>
-
-    <!-- Categorías -->
-    <select class="select select-ghost w-full h-14 mt-3 bg-zinc-950 shadow-xl text-xl text-center">
-      <option disabled selected>Categoría</option>
-      <option>Coctelería</option>
-      <option>Cerveza</option>
-      <option>Sin alcohol</option>
-    </select>
-
-    <!-- Grid de productos con scroll -->
-    <div class="flex-1 overflow-y-auto mt-3 p-2">
-      <product-grid (newProduct)="productToAdd.set($event)"></product-grid>
-    </div>
-  </div>
-
-  <!-- Resumen de orden con scroll independiente -->
-
-      <order-summary [newProduct]="productToAdd()"></order-summary>
+  <router-outlet></router-outlet>
 
 </div>

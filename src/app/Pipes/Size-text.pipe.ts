@@ -9,13 +9,12 @@ export class SizeTextPipe implements PipeTransform {
 
     switch(size.toLowerCase()){
       case 'large':
-        return 'Grande';
+        return '(Gr)';
       case 'small':
-        return 'Chico';
+        return '(Ch)';
       default:
-        return 'Grande'
+        return ''
     };
-
 
   }
 

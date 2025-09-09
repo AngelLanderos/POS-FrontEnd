@@ -10,7 +10,7 @@ import {
 import { OrderItemComponent } from './order-item/order-item.component';
 import { ItemUpdate, Product } from '../../interfaces/interfaces';
 import { CurrencyPipe } from '@angular/common';
-import { productCategoryService } from '../../services/productCategory.service';
+import { ProductCategoryService } from '../../services/productCategory.service';
 
 @Component({
   selector: 'order-summary',
@@ -20,7 +20,7 @@ import { productCategoryService } from '../../services/productCategory.service';
 })
 export class OrderSumaryComponent {
 
-  productCategoryService = inject(productCategoryService);
+  productCategoryService = inject(ProductCategoryService);
   newProduct = input.required<Product | null>();
   products = signal<Product[]>([]);
 

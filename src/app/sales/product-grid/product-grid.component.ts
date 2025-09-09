@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, effect, inject, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { Product, Sizes } from '../../interfaces/interfaces';
+import { Product,ProductResponse, ProductCategories, Sizes } from '../../interfaces/interfaces';
 import { ProductService } from '../../services/product.service';
+import {forkJoin} from 'rxjs'
+import { ProductCategoryService } from '../../services/productCategory.service';
 
 @Component({
   selector: 'product-grid',
@@ -12,57 +14,49 @@ import { ProductService } from '../../services/product.service';
 export class ProductGridComponent {
 
   productService = inject(ProductService);
+  productCategoryService = inject(ProductCategoryService);
+
   newProduct = output<Product>();
-  productCatalog = signal<Product[]>([]);
+  filterCategory = input.required<number>();
+
+  allProducts = signal<ProductResponse[]>([]);
+  filteredProducts = signal<ProductResponse[]>([]);
+  productCategories = signal<ProductCategories[]>([]);
 
   getProductsEffect = effect(() => {
-    this.productService.getProducts().subscribe({
-      next: (res) => {
-        this.productCatalog.set(res);
-        console.log(res);
-      }
-    })
+     forkJoin({
+          products: this.productService.getProducts(),
+          categories: this.productCategoryService.getProductCategories()
+        }).subscribe({
+          next: (results) => {
+            console.log(results);
+            this.allProducts.set(results.products);
+            this.productCategories.set(results.categories);
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        })
+  });
+
+  filterProductsEffect = effect(() => {
+    const categoryId = this.filterCategory();
+    console.log({categoryId});
+    const products = this.allProducts();
+
+    if (categoryId && categoryId > 0) {
+      this.filteredProducts.set(
+        products.filter(product => product.category.id === categoryId)
+      );
+    } else {
+      // si no hay categoría seleccionada, mostrar todos
+      this.filteredProducts.set(products);
+    }
   })
 
-    // {
-    //   name: 'Mojito de frutos rojos',
-    //   price: 120,
-    //   size: 'large',
-    //   quantity: 0,
-    // },
-    // {
-    //   name: 'Cubanito',
-    //   price: 100,
-    //   size: 'large',
-    //   quantity: 0,
-    // },
-    // {
-    //   name: 'Piña Colada',
-    //   price: 80,
-    //   size: 'large',
-    //   quantity: 0,
-    // },
-    // {
-    //   name: 'Michelada',
-    //   price: 100,
-    //   size: 'large',
-    //   quantity: 0,
-    // },
-    // {
-    //   name: 'Cuba Don Julio',
-    //   price: 150,
-    //   size: 'large',
-    //   quantity: 0,
-    // },
-    // {
-    //   name: 'Extintor',
-    //   price: 350,
-    //   size: 'large',
-    //   quantity: 0,
-    // },
-
-
 addProduct(product: Product){
+
+  console.log(product);
     this.newProduct.emit(product);
 }
 
