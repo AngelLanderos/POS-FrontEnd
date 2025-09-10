@@ -4,6 +4,7 @@ import { SalesLayoutComponent } from './layouts/sales-layout/sales-layout.compon
 import { StatsLayoutComponent } from './layouts/stats-layout/stats-layout.component';
 import { InventoryLayoutComponent } from './layouts/inventory-layout/inventory-layout.component';
 import { PayrollLayoutComponent } from './layouts/payroll-layout/payroll-layout.component';
+import { TableGridComponent } from './sales/table-grid/table-grid.component';
 
 export const routes: Routes = [
   {
