@@ -28,4 +28,10 @@ export interface ProductCategories {
 
 export type Sizes =  'small' | 'large'
 
-
+export interface BarTable {
+  created_at: Date;
+  id: number;
+  status: string;
+  table_number: number;
+  provisionaltotal: number;
+}

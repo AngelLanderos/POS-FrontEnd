@@ -16,4 +16,6 @@ export class ProductService {
     return this.http.get(`${this.apiURL}/getProducts`);
   };
 
+  createProduct(){};
+
 };

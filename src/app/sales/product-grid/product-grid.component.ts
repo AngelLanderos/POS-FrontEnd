@@ -55,9 +55,8 @@ export class ProductGridComponent {
   })
 
 addProduct(product: Product){
-
-  console.log(product);
     this.newProduct.emit(product);
 }
+
 
 }

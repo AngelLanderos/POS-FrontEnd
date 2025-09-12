@@ -1,0 +1,25 @@
+<dialog id="my_modal_1" class="modal">
+  <div class="modal-box bg-neutral-100">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle absolute right-2 top-2">✕</button>
+    </form>
+
+
+    <h3 class="text-lg font-bold text-neutral-800 text-xl text-center">Pagar cuenta <span class="text-blue-900">Mesa {{currentBarTable().table_number}}</span></h3>
+
+    <div>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend text-neutral-800 text-xl">Cuenta pendiente de pagar</legend>
+        <span class="text text-xl font-bold text-red-800">{{currentBarTable().provisionaltotal | currency}}</span>
+      </fieldset>
+
+      <fieldset class="fieldset mt-2">
+        <legend class="fieldset-legend text-neutral-800 text-xl">Ingrese el monto a pagar:</legend>
+        <input type="number" class="input bg-neutral-200 text-zinc-900" placeholder="Monto a pagar" [max]="currentBarTable().provisionaltotal" #payment/>
+        <p class="label text-neutral-800">Este monto de descontará de la deuda actual de la mesa</p>
+      </fieldset>
+    </div>
+
+    <button class="btn bg-green-800 border-none rounded w-full mt-5" (click)="payAccount(+payment.value)">Pagar</button>
+  </div>
+</dialog>

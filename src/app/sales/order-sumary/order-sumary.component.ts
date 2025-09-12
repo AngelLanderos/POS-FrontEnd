@@ -11,6 +11,8 @@ import { OrderItemComponent } from './order-item/order-item.component';
 import { ItemUpdate, Product } from '../../interfaces/interfaces';
 import { CurrencyPipe } from '@angular/common';
 import { ProductCategoryService } from '../../services/productCategory.service';
+import { AccountsService } from '../../services/accounts.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'order-summary',
@@ -21,7 +23,10 @@ import { ProductCategoryService } from '../../services/productCategory.service';
 export class OrderSumaryComponent {
 
   productCategoryService = inject(ProductCategoryService);
+  accountService = inject(AccountsService);
+
   newProduct = input.required<Product | null>();
+  tableNumber = input.required<number>();
   products = signal<Product[]>([]);
 
   // ✅ Agregar producto
@@ -71,14 +76,53 @@ export class OrderSumaryComponent {
     });
   };
 
-  test(){
-    this.productCategoryService.getProductCategories().subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: (error) => {
-        console.log(error);
+  createProvitionalAccount(){
+
+    const provitionalOrder = {
+      products: this.products(),
+      table: this.tableNumber(),
+      total: this.total()
+    };
+
+    Swal.fire({
+      title: 'Confirmación de orden',
+      icon: 'question',
+      showConfirmButton: true,
+      confirmButtonColor: '#166534',
+      confirmButtonText: 'Confirmar',
+      showCancelButton: true,
+      cancelButtonColor: '#dc2626',
+      cancelButtonText: 'Cancelar'
+    }).then(res => {
+      if(res.isConfirmed){
+        this.accountService.createProvitionalAccount(provitionalOrder).subscribe({
+            next: (res) => {
+              console.log(res);
+              //TODO: TOAST notification
+              setTimeout(() => {
+                window.location.reload();
+              },1000);
+
+            },
+            error: (error) => {
+              Swal.fire({
+                title: 'Error creando orden',
+                icon: 'error'
+              });
+              console.log(error);
+            }
+          });
       }
     })
+
+    // this.productCategoryService.getProductCategories().subscribe({
+    //   next: (res) => {
+    //     console.log(res);
+    //   },
+    //   error: (error) => {
+    //     console.log(error);
+    //   }
+    // })
   }
+
 }
