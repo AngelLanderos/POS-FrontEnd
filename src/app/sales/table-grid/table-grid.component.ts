@@ -21,7 +21,7 @@ export class TableGridComponent {
     id: 0,
     status: '',
     table_number: 0,
-    provisionaltotal: 0
+    provisionalTotal: 0
   });
 
   ngOnInit(){

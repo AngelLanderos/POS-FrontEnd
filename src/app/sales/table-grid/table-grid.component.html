@@ -31,10 +31,10 @@
     </div>
 
     <div class="stat-value text-blue-900">Mesa #{{barTable.table_number}}</div>
-    <p class="text-black font-semibold">Pendiente de pagar: <span class="text-red-500">{{barTable.provisionaltotal |
+    <p class="text-black font-semibold">Pendiente de pagar: <span class="text-red-500">{{barTable.provisionalTotal |
         currency}}</span></p>
 
-    @if (barTable.provisionaltotal != 0) {
+    @if (barTable.provisionalTotal != 0) {
     <div class="stat-actions mt-1">
       <button class="btn btn-sm" onclick="my_modal_1.showModal()"
         (click)="this.currentTable.set(barTable)">Pagar</button>

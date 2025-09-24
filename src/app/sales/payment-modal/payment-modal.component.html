@@ -10,12 +10,12 @@
     <div>
       <fieldset class="fieldset">
         <legend class="fieldset-legend text-neutral-800 text-xl">Cuenta pendiente de pagar</legend>
-        <span class="text text-xl font-bold text-red-800">{{currentBarTable().provisionaltotal | currency}}</span>
+        <span class="text text-xl font-bold text-red-800">{{currentBarTable().provisionalTotal | currency}}</span>
       </fieldset>
 
       <fieldset class="fieldset mt-2">
         <legend class="fieldset-legend text-neutral-800 text-xl">Ingrese el monto a pagar:</legend>
-        <input type="number" class="input bg-neutral-200 text-zinc-900" placeholder="Monto a pagar" [max]="currentBarTable().provisionaltotal" #payment/>
+        <input type="number" class="input bg-neutral-200 text-zinc-900" placeholder="Monto a pagar" [max]="currentBarTable().provisionalTotal" #payment/>
         <p class="label text-neutral-800">Este monto de descontará de la deuda actual de la mesa</p>
       </fieldset>
     </div>

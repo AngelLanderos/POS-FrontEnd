@@ -33,5 +33,5 @@ export interface BarTable {
   id: number;
   status: string;
   table_number: number;
-  provisionaltotal: number;
+  provisionalTotal: number;
 }
