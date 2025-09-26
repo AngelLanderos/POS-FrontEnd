@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   input,
+  signal,
 } from '@angular/core';
 import { BarTable } from '../../interfaces/interfaces';
 import { CurrencyPipe } from '@angular/common';
@@ -19,10 +20,12 @@ export class PaymentModalComponent {
   accountService = inject(AccountsService);
 
   currentBarTable = input.required<BarTable>();
+  payment = signal<number>(0);
 
-  payAccount(payment: number) {
+  payAccount() {
+
     this.accountService
-      .provitionalPayment(this.currentBarTable().table_number, payment)
+      .provitionalPayment(this.currentBarTable().table_number, this.payment())
       .subscribe({
         next: (res) => {
           Swal.fire({
@@ -45,5 +48,6 @@ export class PaymentModalComponent {
           });
         },
       });
+
   }
 }

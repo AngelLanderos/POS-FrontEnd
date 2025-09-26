@@ -4,7 +4,6 @@
       <button class="btn btn-sm btn-circle absolute right-2 top-2">✕</button>
     </form>
 
-
     <h3 class="text-lg font-bold text-neutral-800 text-xl text-center">Pagar cuenta <span class="text-blue-900">Mesa {{currentBarTable().table_number}}</span></h3>
 
     <div>
@@ -15,11 +14,21 @@
 
       <fieldset class="fieldset mt-2">
         <legend class="fieldset-legend text-neutral-800 text-xl">Ingrese el monto a pagar:</legend>
-        <input type="number" class="input bg-neutral-200 text-zinc-900" placeholder="Monto a pagar" [max]="currentBarTable().provisionalTotal" #payment/>
-        <p class="label text-neutral-800">Este monto de descontará de la deuda actual de la mesa</p>
+        <div class="grid grid-cols-4">
+          <div class="col-span-3">
+            <input type="number" class="input bg-neutral-200 text-zinc-900" placeholder="Monto a pagar" [max]="currentBarTable().provisionalTotal" [value]="payment()" (change)="this.payment.set(+paymentInput.value)" #paymentInput/>
+          </div>
+          <div class="col-span-1">
+            <button class="btn" (click)="this.payment.set(currentBarTable().provisionalTotal)">Pagar total</button>
+          </div>
+        </div>
+
+        <p class="label text-neutral-800" >Este monto de descontará de la deuda actual de la mesa</p>
       </fieldset>
+
     </div>
 
-    <button class="btn bg-green-800 border-none rounded w-full mt-5" (click)="payAccount(+payment.value)">Pagar</button>
+    <button class="btn bg-green-800 border-none rounded w-full mt-5" (click)="payAccount()">Pagar</button>
+
   </div>
 </dialog>
