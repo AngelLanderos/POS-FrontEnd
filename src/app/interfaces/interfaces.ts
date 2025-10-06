@@ -1,8 +1,10 @@
 export interface Product {
+  id: number;
   name: string;
   price: number;
   size: string,
-  quantity: number
+  quantity: number,
+
 };
 
 export interface ProductResponse {

@@ -1,8 +1,21 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { Product,ProductResponse, ProductCategories, Sizes } from '../../interfaces/interfaces';
+import {
+  Product,
+  ProductResponse,
+  ProductCategories,
+  Sizes,
+} from '../../interfaces/interfaces';
 import { ProductService } from '../../services/product.service';
-import {forkJoin} from 'rxjs'
+import { forkJoin } from 'rxjs';
 import { ProductCategoryService } from '../../services/productCategory.service';
 
 @Component({
@@ -12,7 +25,6 @@ import { ProductCategoryService } from '../../services/productCategory.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductGridComponent {
-
   productService = inject(ProductService);
   productCategoryService = inject(ProductCategoryService);
 
@@ -24,39 +36,37 @@ export class ProductGridComponent {
   productCategories = signal<ProductCategories[]>([]);
 
   getProductsEffect = effect(() => {
-     forkJoin({
-          products: this.productService.getProducts(),
-          categories: this.productCategoryService.getProductCategories()
-        }).subscribe({
-          next: (results) => {
-            console.log(results);
-            this.allProducts.set(results.products);
-            this.productCategories.set(results.categories);
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        })
+    forkJoin({
+      products: this.productService.getProducts(),
+      categories: this.productCategoryService.getProductCategories(),
+    }).subscribe({
+      next: (results) => {
+        console.log(results);
+        this.allProducts.set(results.products);
+        this.productCategories.set(results.categories);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   });
 
   filterProductsEffect = effect(() => {
     const categoryId = this.filterCategory();
-    console.log({categoryId});
+    console.log({ categoryId });
     const products = this.allProducts();
 
     if (categoryId && categoryId > 0) {
       this.filteredProducts.set(
-        products.filter(product => product.category.id === categoryId)
+        products.filter((product) => product.category.id === categoryId)
       );
     } else {
       // si no hay categoría seleccionada, mostrar todos
       this.filteredProducts.set(products);
     }
-  })
+  });
 
-addProduct(product: Product){
+  addProduct(product: Product) {
     this.newProduct.emit(product);
-}
-
-
+  }
 }

@@ -12,14 +12,14 @@ export class ProductCardComponent {
   currentProduct = input.required<ProductResponse>();
   newProduct = output<Product>();
 
-
   addProduct(product: ProductResponse, size: string) {
 
     let newProduct : Product = {
       name: product.name,
       price: product.base_price,
       size,
-      quantity: 1
+      quantity: 1,
+      id: product.id
     }
 
     this.newProduct.emit(newProduct);
@@ -28,7 +28,8 @@ export class ProductCardComponent {
       name: '',
       price: 0,
       size: '',
-      quantity: 0
+      quantity: 0,
+      id: 0
     }
 
   }

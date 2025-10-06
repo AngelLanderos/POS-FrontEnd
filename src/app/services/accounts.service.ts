@@ -10,14 +10,14 @@ import { Observable } from 'rxjs';
 export class AccountsService {
 
   private http = inject(HttpClient);
-  private apiURL = `http://localhost:3000/accounts`;
+  private apiURL = `http://localhost:3000/orders`;
 
-  createProvitionalAccount(order: any): Observable<any>{
-    return this.http.post(`${this.apiURL}/createProvitionalAccount`,{order});
+  createNewOrder(order: any): Observable<any>{
+    return this.http.post(`${this.apiURL}/createNewOrder`,{order});
   };
 
   provitionalPayment(tableNumber: number, payment: number): Observable<any>{
     return this.http.post(`${this.apiURL}/provitionalPayment`,{tableNumber,payment});
-  }
+  };
 
 }

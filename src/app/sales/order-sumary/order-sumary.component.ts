@@ -76,9 +76,9 @@ export class OrderSumaryComponent {
     });
   };
 
-  createProvitionalAccount(){
+  createNewOrder(){
 
-    const provitionalOrder = {
+    const order = {
       products: this.products(),
       table: this.tableNumber(),
       total: this.total()
@@ -95,13 +95,13 @@ export class OrderSumaryComponent {
       cancelButtonText: 'Cancelar'
     }).then(res => {
       if(res.isConfirmed){
-        this.accountService.createProvitionalAccount(provitionalOrder).subscribe({
+        this.accountService.createNewOrder(order).subscribe({
             next: (res) => {
               console.log(res);
               //TODO: TOAST notification
               setTimeout(() => {
                 window.location.reload();
-              },1000);
+              },500);
 
             },
             error: (error) => {
@@ -114,6 +114,8 @@ export class OrderSumaryComponent {
           });
       }
     })
+
+
 
     // this.productCategoryService.getProductCategories().subscribe({
     //   next: (res) => {
