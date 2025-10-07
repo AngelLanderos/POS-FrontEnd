@@ -6,18 +6,21 @@
   </select>
 </div>
 
+<div class="grid grid-cols-6">
 @for (barTable of tables(); track $index) {
   <div class="stats shadow mt-3 ml-2">
     <div class="stat bg-neutral-100">
       <div class="stat-figure text-primary">
 
-        <button class="hover:bg-neutral-400 hover:cursor-pointer rounded-lg" (click)="createOrder(barTable.table_number)">
+        <!-- <button class="hover:bg-neutral-400 hover:cursor-pointer rounded-lg" (click)="createOrder(barTable.table_number)">
           <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 20 20">
             <path fill="#171717"
               d="M10 5.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-4-2a.5.5 0 0 0-1 0V5H3.5a.5.5 0 0 0 0 1H5v1.5a.5.5 0 0 0 1 0V6h1.5a.5.5 0 0 0 0-1H6zm8 .5h-3.207a5.5 5.5 0 0 0-.393-1H14a3 3 0 0 1 2.995 2.824L17 6v4.379a2 2 0 0 1-.467 1.284l-.119.13l-4.621 4.621a2 2 0 0 1-1.238.578l-.176.008H6a3 3 0 0 1-2.995-2.824L3 14v-3.6q.476.244 1 .393V14a2 2 0 0 0 1.85 1.995L6 16h4v-3a3 3 0 0 1 2.824-2.995L13 10h3V6a2 2 0 0 0-1.85-1.995zm1.783 7.001L13 11a2 2 0 0 0-1.995 1.85L11 13v2.781l.086-.074l4.621-4.621q.04-.04.075-.085"
               stroke-width="0.5" stroke="#171717" />
           </svg>
-        </button>
+        </button> -->
+
+
 
       </div>
 
@@ -33,16 +36,29 @@
       <div class="stat-value text-blue-900">Mesa #{{barTable.table_number}}</div>
       <p class="text-black font-semibold">Pendiente de pagar: <span class="text-red-500">{{barTable.provisionalTotal | currency}}</span></p>
 
-      @if (barTable.provisionalTotal != 0) {
+
         <div class="stat-actions mt-1">
-          <button class="btn btn-sm" onclick="my_modal_1.showModal()"
-            (click)="this.currentTable.set(barTable)">Pagar</button>
+          <!-- <button class="btn btn-sm" onclick="my_modal_1.showModal()"
+            (click)="this.currentTable.set(barTable)">Pagar</button> -->
+            <!-- <button class="btn btn-sm"  (click)="this.currentTable.set(barTable)">Pagar</button> -->
+             <button class="hover:bg-neutral-400 hover:cursor-pointer rounded-lg" (click)="createOrder(barTable.table_number)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 20 20">
+            <path fill="#171717"
+              d="M10 5.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-4-2a.5.5 0 0 0-1 0V5H3.5a.5.5 0 0 0 0 1H5v1.5a.5.5 0 0 0 1 0V6h1.5a.5.5 0 0 0 0-1H6zm8 .5h-3.207a5.5 5.5 0 0 0-.393-1H14a3 3 0 0 1 2.995 2.824L17 6v4.379a2 2 0 0 1-.467 1.284l-.119.13l-4.621 4.621a2 2 0 0 1-1.238.578l-.176.008H6a3 3 0 0 1-2.995-2.824L3 14v-3.6q.476.244 1 .393V14a2 2 0 0 0 1.85 1.995L6 16h4v-3a3 3 0 0 1 2.824-2.995L13 10h3V6a2 2 0 0 0-1.85-1.995zm1.783 7.001L13 11a2 2 0 0 0-1.995 1.85L11 13v2.781l.086-.074l4.621-4.621q.04-.04.075-.085"
+              stroke-width="0.5" stroke="#171717" />
+          </svg>
+        </button>
+        <button class="hover:bg-neutral-400 hover:cursor-pointer rounded-lg" (click)="showAccountDetails(barTable.table_number)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24"><path fill="#171717" d="M4.715 17.13a.23.23 0 0 0 .116-.165V6.287a.97.97 0 0 1 .37-.776a.24.24 0 0 0 .116-.194V3.715a.26.26 0 0 0-.117-.194a.28.28 0 0 0-.213 0A2.91 2.91 0 0 0 2.89 6.287v11.94a.25.25 0 0 0 .165.233c.1.033.21-.002.272-.087a4.7 4.7 0 0 1 1.388-1.243m14.26-13.648a.28.28 0 0 0-.214 0a.26.26 0 0 0-.087.194v1.64a.24.24 0 0 0 .087.195a.97.97 0 0 1 .398.776v12.62a.97.97 0 0 1-.97.97h-1.467a.25.25 0 0 0-.242.243a2.5 2.5 0 0 1-.389 1.33a.24.24 0 0 0 0 .242a.25.25 0 0 0 .214.127h1.893a2.91 2.91 0 0 0 2.912-2.912V6.287a2.91 2.91 0 0 0-2.136-2.805M6.773 6.045a.25.25 0 0 0 .252.242h9.94a.25.25 0 0 0 .252-.242V3.133a.25.25 0 0 0-.252-.243h-2.194a.25.25 0 0 1-.242-.223c0-1.868-2.023-3.036-3.64-2.102a2.43 2.43 0 0 0-1.214 2.102a.25.25 0 0 1-.243.223H7.026a.25.25 0 0 0-.252.243Zm6.076-3.398a.74.74 0 0 1-.737.728a.728.728 0 1 1 .737-.728m1.738 16.512a1.213 1.213 0 0 0-1.708.155l-.845.718a.25.25 0 0 1-.262 0a.24.24 0 0 1-.146-.223v-6.241a1.456 1.456 0 0 0-2.912 0v4.125c0 .13-.103.238-.233.243h-1.34A3.24 3.24 0 0 0 3.9 21.168v2.35c0 .133.108.242.242.242h8.125a.24.24 0 0 0 .184-.087l2.3-2.825a1.213 1.213 0 0 0-.164-1.69" stroke-width="0.5" stroke="#171717"/></svg>
+        </button>
         </div>
-      }
+
 
     </div>
 
   </div>
 }
+</div>
+
 
 <payment-modal [currentBarTable]="currentTable()"></payment-modal>

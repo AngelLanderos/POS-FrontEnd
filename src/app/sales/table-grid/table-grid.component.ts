@@ -39,4 +39,8 @@ export class TableGridComponent {
     this.router.navigate(['/dashboard/sales/orderSummary',tableId]);
   }
 
+  showAccountDetails(tableId: number){
+    this.router.navigate(['/dashboard/sales/accountDetails',tableId]);
+  }
+
 }
