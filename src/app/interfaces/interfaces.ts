@@ -37,3 +37,11 @@ export interface BarTable {
   table_number: number;
   provisionalTotal: number;
 }
+
+export interface ItemsResponse {
+    name: string,
+    quantity: number,
+    unit_price: number,
+    table_id: number,
+    order_item_id: number
+};
