@@ -2,12 +2,12 @@
   <div class="col-span-3">
     <!-- Buscador -->
     <div class="grid grid-cols-5 gap-2">
-      <button class="col-span-1 input bg-zinc-950 text-xl font-bold hover:bg-zinc-800 hover:cursor-pointer">
+      <button class="col-span-1 input bg-zinc-950 text-xl font-bold hover:bg-zinc-800 hover:cursor-pointer" (click)="goBack()">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="24" viewBox="0 0 30 24">
           <path fill="#fff"
             d="m4 10l-.707.707L2.586 10l.707-.707zm17 8a1 1 0 1 1-2 0zM8.293 15.707l-5-5l1.414-1.414l5 5zm-5-6.414l5-5l1.414 1.414l-5 5zM4 9h10v2H4zm17 7v2h-2v-2zm-7-7a7 7 0 0 1 7 7h-2a5 5 0 0 0-5-5z"
             stroke-width="0.5" stroke="#fff" />
-        </svg>Regresar</button>
+        </svg>Regresar </button>
      <label class="col-span-2 input w-full bg-neutral-100 shadow-xl text-xl text-black font-bold flex justify-center items-center">Mesa #{{currentTableId()}}</label>
       <label class="col-span-2 input w-full bg-neutral-100 shadow-xl text-xl text-black font-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">

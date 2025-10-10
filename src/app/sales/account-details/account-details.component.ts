@@ -6,11 +6,12 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../services/orderItems.service';
 import { PaymetnsService } from '../../services/paymetns.service';
 import { ItemsResponse } from '../../interfaces/interfaces';
 import { CurrencyPipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-account-details',
@@ -27,9 +28,10 @@ export class AccountDetailsComponent {
   isProcessing = signal<boolean>(false);
 
   // inyecciones
-  paymentService = inject(PaymetnsService)
+  paymentService = inject(PaymetnsService);
   activatedRoute = inject(ActivatedRoute);
   orderService = inject(OrderService);
+  router = inject(Router);
 
   ngOnInit() {
     this.currentTableId.set(
@@ -73,7 +75,7 @@ export class AccountDetailsComponent {
   // selección por ítem
   setSelectedQuantity(itemId: number, qty: number) {
     const item = this.tableItems().find((i) => i.order_item_id === itemId);
-    const max = item ? Number(item.quantity) : 0;
+    const max = item ? Number(item.quantity - item.paid_quantity) : 0;
     const newQty = Math.max(0, Math.min(qty, max));
 
     this.selectedQuantities.update((map) => {
@@ -94,18 +96,23 @@ export class AccountDetailsComponent {
   }
 
   toggleFullSelection(item: ItemsResponse, event: Event) {
-    const target = (event.target ?? event.currentTarget) as HTMLInputElement | null;
+    const target = (event.target ??
+      event.currentTarget) as HTMLInputElement | null;
     const checked = !!(target && target.checked);
 
     this.selectedQuantities.update((map) => {
       const copy = { ...map };
-      copy[item.order_item_id] = checked ? item.quantity : 0;
+      copy[item.order_item_id] = checked
+        ? item.quantity - item.paid_quantity
+        : 0;
       return copy;
     });
   }
 
   isFullySelected(item: ItemsResponse) {
-    return (this.selectedQuantities()[item.order_item_id] ?? 0) === item.quantity;
+    return (
+      (this.selectedQuantities()[item.order_item_id] ?? 0) === item.quantity
+    );
   }
 
   // Construye allocations desde la selección actual
@@ -128,7 +135,7 @@ export class AccountDetailsComponent {
       quantity: Number(it.quantity ?? 0),
       amount: Number(it.unit_price ?? 0) * Number(it.quantity ?? 0),
     }));
-  };
+  }
 
   // Pagar solo los items seleccionados
   paySelected() {
@@ -138,27 +145,42 @@ export class AccountDetailsComponent {
       return;
     }
 
-    const payload = {
-      table_id: this.currentTableId(),
-      payment: {
-        amount: allocations.reduce((s, a) => s + Number(a.amount || 0), 0),
-        method: this.paymentMethod(),
-      },
-      allocations, // backend: { order_item_id, quantity, amount }
-    };
+    Swal.fire({
+      title: 'Confirmación de pago',
+      icon: 'warning',
+      text: `Monto cobrado: $${this.selectedSubtotal()}`,
+      showConfirmButton: true,
+      confirmButtonColor: '#166534',
+      confirmButtonText: 'Confirmar pago',
+      showCancelButton: true,
+      cancelButtonColor: '#991b1b',
+      cancelButtonText: 'Cancelar',
+    }).then((action) => {
+      if (action.isConfirmed) {
+        const payload = {
+          table_id: this.currentTableId(),
+          payment: {
+            amount: allocations.reduce((s, a) => s + Number(a.amount || 0), 0),
+            method: this.paymentMethod(),
+          },
+          allocations, // backend: { order_item_id, quantity, amount }
+        };
 
-    this.isProcessing.set(true);
+        this.isProcessing.set(true);
 
-    this.paymentService.paySelected(payload).subscribe({
-      next: (res) => {
-        // al completar, recargar items desde servidor (más seguro que hacer updates locales)
-        this.loadItems();
-        this.isProcessing.set(false);
-      },
-      error: (err) => {
-        console.error('Error en paySelected:', err);
-        this.isProcessing.set(false);
-      },
+        this.paymentService.paySelected(payload).subscribe({
+          next: (res) => {
+            // al completar, recargar items desde servidor (más seguro que hacer updates locales)
+
+            this.loadItems();
+            this.isProcessing.set(false);
+          },
+          error: (err) => {
+            console.error('Error en paySelected:', err);
+            this.isProcessing.set(false);
+          },
+        });
+      }
     });
   }
 
@@ -168,28 +190,42 @@ export class AccountDetailsComponent {
     if (!allocations.length) return;
 
     const payload = {
-      table_id: this.currentTableId(),
-      payment: {
-        amount: allocations.reduce((s, a) => s + Number(a.amount || 0), 0),
-        method: this.paymentMethod(),
-      },
-      allocations,
-    };
+          table_id: this.currentTableId(),
+          payment: {
+            amount: allocations.reduce((s, a) => s + Number(a.amount || 0), 0),
+            method: this.paymentMethod(),
+          },
+          allocations,
+        };
 
-    this.isProcessing.set(true);
+    Swal.fire({
+      title: 'Confirmación de pago',
+      icon: 'warning',
+      text: `Monto cobrado: $${payload.payment.amount}`,
+      showConfirmButton: true,
+      confirmButtonColor: '#166534',
+      confirmButtonText: 'Confirmar pago',
+      showCancelButton: true,
+      cancelButtonColor: '#991b1b',
+      cancelButtonText: 'Cancelar',
+    }).then((action) => {
+      if (action.isConfirmed) {
 
-    this.paymentService.paySelected(payload).subscribe({
-      next: (res) => {
-        // después de pagar todo, recarga (espera backend haya marcado orden como cerrada)
-        this.loadItems();
-        this.isProcessing.set(false);
-      },
-      error: (err) => {
-        console.error('Error en payAll:', err);
-        this.isProcessing.set(false);
-      },
+        this.isProcessing.set(true);
+
+        this.paymentService.paySelected(payload).subscribe({
+          next: (res) => {
+            // después de pagar todo, recarga (espera backend haya marcado orden como cerrada)
+            this.loadItems();
+            this.isProcessing.set(false);
+          },
+          error: (err) => {
+            console.error('Error en payAll:', err);
+            this.isProcessing.set(false);
+          },
+        });
+      }
     });
-
   }
 
   // util: intentar inferir order_id desde los items (si la API lo incluye)
@@ -199,4 +235,7 @@ export class AccountDetailsComponent {
   //   // ItemsResponse puede contener order_id si tu consulta lo devuelve
   //   return first ? (first.order_item_id ?? null) : null;
   // }
+  goBack() {
+    this.router.navigate(['/dashboard/sales']);
+  }
 }

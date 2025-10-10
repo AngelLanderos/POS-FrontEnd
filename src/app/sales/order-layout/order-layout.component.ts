@@ -8,7 +8,7 @@ import { Product, ProductCategories } from '../../interfaces/interfaces';
 import { ProductCategoryService } from '../../services/productCategory.service';
 import { ProductGridComponent } from '../product-grid/product-grid.component';
 import { OrderSumaryComponent } from '../order-sumary/order-sumary.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-layout',
@@ -21,6 +21,7 @@ export class OrderLayoutComponent {
 
   productCategoryService = inject(ProductCategoryService);
   activatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
 
   productToAdd = signal<Product | null>(null);
   productCategories = signal<ProductCategories[]>([]);
@@ -35,5 +36,9 @@ export class OrderLayoutComponent {
         this.productCategories.set(res);
       },
     });
+  }
+
+  goBack(){
+    this.router.navigate(['/dashboard/sales']);
   }
 }

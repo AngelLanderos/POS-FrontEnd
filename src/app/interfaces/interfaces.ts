@@ -43,5 +43,6 @@ export interface ItemsResponse {
     quantity: number,
     unit_price: number,
     table_id: number,
-    order_item_id: number
+    order_item_id: number,
+    paid_quantity: number
 };
