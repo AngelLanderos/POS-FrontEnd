@@ -128,7 +128,7 @@ export class AccountDetailsComponent {
       quantity: Number(it.quantity ?? 0),
       amount: Number(it.unit_price ?? 0) * Number(it.quantity ?? 0),
     }));
-  }
+  };
 
   // Pagar solo los items seleccionados
   paySelected() {
@@ -163,34 +163,34 @@ export class AccountDetailsComponent {
   }
 
   // Pagar todo lo pendiente de la mesa
-  // payAll() {
-  //   const allocations = this.buildAllocationsForAll();
-  //   if (!allocations.length) return;
+  payAll() {
+    const allocations = this.buildAllocationsForAll();
+    if (!allocations.length) return;
 
-  //   const payload = {
-  //     order_id: this.getOrderIdFromItems(),
-  //     table_id: this.currentTableId(),
-  //     payment: {
-  //       amount: allocations.reduce((s, a) => s + Number(a.amount || 0), 0),
-  //       method: this.paymentMethod(),
-  //     },
-  //     allocations,
-  //   };
+    const payload = {
+      table_id: this.currentTableId(),
+      payment: {
+        amount: allocations.reduce((s, a) => s + Number(a.amount || 0), 0),
+        method: this.paymentMethod(),
+      },
+      allocations,
+    };
 
-  //   this.isProcessing.set(true);
+    this.isProcessing.set(true);
 
-  //   this.orderService.payAll(payload).subscribe({
-  //     next: (res) => {
-  //       // después de pagar todo, recarga (espera backend haya marcado orden como cerrada)
-  //       this.loadItems();
-  //       this.isProcessing.set(false);
-  //     },
-  //     error: (err) => {
-  //       console.error('Error en payAll:', err);
-  //       this.isProcessing.set(false);
-  //     },
-  //   });
-  // }
+    this.paymentService.paySelected(payload).subscribe({
+      next: (res) => {
+        // después de pagar todo, recarga (espera backend haya marcado orden como cerrada)
+        this.loadItems();
+        this.isProcessing.set(false);
+      },
+      error: (err) => {
+        console.error('Error en payAll:', err);
+        this.isProcessing.set(false);
+      },
+    });
+
+  }
 
   // util: intentar inferir order_id desde los items (si la API lo incluye)
   // si no está disponible, backend puede recibir solo table_id y auto-asignar.

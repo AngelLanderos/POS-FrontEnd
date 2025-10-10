@@ -14,10 +14,10 @@ export class PaymetnsService {
 
   paySelected(payload: any) : Observable<any>{
     return this.http.post(`${this.apiURL}/paySelected`,{payload})
-  }
+  };
 
   payAll(payload: any) : Observable<any>{
-    return this.http.post(`${this.apiURL}/paySelected`,{payload})
-  }
+    return this.http.post(`${this.apiURL}/payAll`,{payload})
+  };
 
 }
