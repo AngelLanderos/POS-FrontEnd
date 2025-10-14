@@ -187,8 +187,8 @@
       </div>
 
       <button class="btn w-full h-10 text-xl bg-blue-800 mt-3 border-none" (click)="paySelected()">Pagar seleccionados </button>
-      <button class="btn w-full h-10 text-xl bg-green-800 mt-3 border-none" (click)="payAll()">Pagar todo <span
-          class="text-black font-bold ml-5"> {{selectedSubtotal() | currency}} </span></button>
+      <button class="btn w-full h-10 text-xl bg-green-800 mt-3 border-none" (click)="payAll()">Pagar todo  <span
+          class="text-black font-bold ml-5"> {{totalPayment() | currency}} </span></button>
     </div>
 
   </div>

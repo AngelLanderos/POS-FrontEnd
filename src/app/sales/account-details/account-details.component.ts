@@ -24,6 +24,7 @@ export class AccountDetailsComponent {
   currentTableId = signal<number>(0);
   tableItems = signal<ItemsResponse[]>([]);
   selectedQuantities = signal<Record<number, number>>({});
+  totalPayment = signal<number>(0);
   paymentMethod = signal<string>('cash'); // ejemplo por defecto
   isProcessing = signal<boolean>(false);
 
@@ -45,6 +46,8 @@ export class AccountDetailsComponent {
     this.orderService.getOrdersItem(this.currentTableId()).subscribe({
       next: (res: ItemsResponse[]) => {
         this.tableItems.set(res);
+
+        this.totalPayment.set(this.tableItems().map(item => (item.quantity - item.paid_quantity) * item.unit_price).reduce((acc,item) => acc + item));
         // resetear selecciones (no queremos mantener selecciones entre recargas)
         this.selectedQuantities.set({});
       },

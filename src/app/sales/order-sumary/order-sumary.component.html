@@ -1,28 +1,26 @@
-<div
-  class="p-4 mr-4 sm:ml-2 col-span-1 bg-neutral-100 border-dashed rounded-sm flex flex-col h-[calc(100vh-7rem)]">
-  <!-- Product Summary -->
+<!-- order-summary.component.html -->
+<div class="p-4 mr-4 sm:ml-2 bg-neutral-100 border-dashed rounded-sm flex flex-col h-[calc(100vh-7rem)]">
+  <!-- Header -->
   <h1 class="text-xl font-semibold mb-3 text-black text-center">Resumen de Orden</h1>
 
-  <!-- Contenido scrolleable -->
+  <!-- Contenido scrolleable: lista de items -->
   <div class="flex-1 overflow-y-auto">
-    <!-- Product Summary -->
-@for (orderItem of products(); track $index) {
-  <order-item [product]="orderItem" (itemUpdate)="updateItem($event)"></order-item>
-}
-
+    @for (orderItem of products(); track $index) {
+      <order-item [product]="orderItem" (itemUpdate)="updateItem($event)"></order-item>
+    }
   </div>
 
-    <div class="w-full bg-gray-200 h-10 grid grid-cols-2 rounded-md shadow-lg border-indigo-500">
-      <p class="text-xl font-bold text-black self-center ml-4">Total</p>
-      <div class="badge badge-neutral badge-xl justify-self-end self-center mr-2">{{total() | currency}}</div>
-    </div>
+  <!-- Footer fijo -->
+  <div class="w-full bg-gray-200 h-10 grid grid-cols-2 rounded-md shadow-lg border-indigo-500 mt-3">
+    <p class="text-xl font-bold text-black self-center ml-4">Total</p>
+    <div class="badge badge-neutral badge-xl justify-self-end self-center mr-2">{{total() | currency}}</div>
+  </div>
 
-    <div class="w-full bg-gray-200 h-10 grid grid-cols-3 rounded-md shadow-lg border-indigo-500 mt-3">
-      <p class="text-xl font-bold text-black self-center ml-4 col-span-2">Descuento</p>
-      <!-- <input type="number" placeholder="Descuento" class="input bg-stone-300 self-center mr-2"/> -->
-    </div>
+  <div class="w-full bg-gray-200 h-10 grid grid-cols-3 rounded-md shadow-lg border-indigo-500 mt-3">
+    <p class="text-xl font-bold text-black self-center ml-4 col-span-2">Descuento</p>
+  </div>
 
-    <!-- <div class="btn w-full h-15 self-end text-xl bg-blue-700 mt-5 border-none">Pagar</div> -->
-    <button class="btn w-full h-10 self-end text-xl bg-green-800 mt-3 border-none" (click)="createNewOrder()">Confirmar orden {{total() | currency}}</button>
-
+  <button class="btn w-full h-10 self-end text-xl bg-green-800 mt-3 border-none" (click)="createNewOrder()">
+    Confirmar orden {{total() | currency}}
+  </button>
 </div>
