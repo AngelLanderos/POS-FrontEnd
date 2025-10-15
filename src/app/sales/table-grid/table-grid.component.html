@@ -23,12 +23,21 @@
       </div>
 
       <div class="flex">
-        <div class="inline-grid *:[grid-area:1/1]">
-          <div class="status status-success animate-ping"></div>
-          <div class="status status-success"></div>
-        </div>
 
-        <div class="stat-title text-black text-xl font-bold">Disponible</div>
+        @if (barTable.status == 'free') {
+          <div class="inline-grid *:[grid-area:1/1]">
+            <div class="status status-success animate-ping"></div>
+            <div class="status status-success"></div>
+          </div>
+        } @else {
+          <div class="inline-grid *:[grid-area:1/1]">
+            <div class="status status-error animate-ping"></div>
+            <div class="status status-error"></div>
+          </div>
+        }
+
+        <p class="stat-title text-black text-xl font-bold">{{barTable.status | BarTableStatus}}</p>
+
       </div>
 
       <div class="stat-value text-blue-900">Mesa #{{barTable.table_number}}</div>

@@ -46,3 +46,11 @@ export interface ItemsResponse {
     order_item_id: number,
     paid_quantity: number
 };
+
+const TABLE_STATUS = {
+  AVAILABLE: "available",
+  OCCUPIED: "occupied",
+  NEEDS_CLEANING: "needs_cleaning",
+  RESERVED: "reserved",
+  BLOCKED: "blocked",
+};

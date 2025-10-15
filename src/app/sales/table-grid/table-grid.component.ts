@@ -4,10 +4,11 @@ import { BarTable } from '../../interfaces/interfaces';
 import { Router } from '@angular/router';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { PaymentModalComponent } from '../payment-modal/payment-modal.component';
+import { BarTableStatusPipe } from '../../Pipes/BarTableStatus.pipe';
 
 @Component({
   selector: 'table-grid',
-  imports: [PaymentModalComponent,CurrencyPipe],
+  imports: [PaymentModalComponent,CurrencyPipe, BarTableStatusPipe],
   templateUrl: './table-grid.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
