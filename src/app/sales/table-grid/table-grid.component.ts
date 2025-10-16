@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TableService } from '../../services/table.service';
 import { BarTable } from '../../interfaces/interfaces';
 import { Router } from '@angular/router';
@@ -16,6 +16,8 @@ export class TableGridComponent {
 
   router = inject(Router);
   tableService = inject(TableService);
+
+  selectedStatus = signal<string>('all');
   tables = signal<BarTable[]>([]);
   currentTable = signal<BarTable>({
     created_at: new Date(),
@@ -35,6 +37,17 @@ export class TableGridComponent {
       }
     })
   }
+
+  tableGrid = computed(() => {
+    const filter = this.selectedStatus().trim().toLowerCase();
+
+    if(filter == 'all') return this.tables();
+
+    if(filter == 'bar_sale') this.router.navigate(['/dashboard/sales/orderSummary',1])
+
+    return this.tables().filter(table => table.status === filter);
+  }
+  )
 
   createOrder(tableId: number){
     this.router.navigate(['/dashboard/sales/orderSummary',tableId]);

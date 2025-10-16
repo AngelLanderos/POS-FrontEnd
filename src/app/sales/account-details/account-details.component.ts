@@ -221,6 +221,7 @@ export class AccountDetailsComponent {
             // después de pagar todo, recarga (espera backend haya marcado orden como cerrada)
             this.loadItems();
             this.isProcessing.set(false);
+            this.totalPayment.set(0);
           },
           error: (err) => {
             console.error('Error en payAll:', err);
