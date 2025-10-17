@@ -54,3 +54,7 @@ const TABLE_STATUS = {
   RESERVED: "reserved",
   BLOCKED: "blocked",
 };
+
+// export interface ProductToBarSale {
+//   product
+// };

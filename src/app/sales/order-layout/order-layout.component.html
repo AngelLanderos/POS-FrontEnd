@@ -16,7 +16,7 @@
         </button>
 
         <label class="col-span-2 input w-full bg-neutral-100 shadow-xl text-xl text-black font-bold flex justify-center items-center">
-          Mesa #{{currentTableId()}}
+          {{orderIdentifier()}}
         </label>
 
         <label class="col-span-2 input w-full bg-neutral-100 shadow-xl text-xl text-black font-bold flex items-center">
@@ -59,6 +59,7 @@
       class="block"
       [newProduct]="productToAdd()"
       [tableNumber]="currentTableId()"
+      [isBarSale]="isBarSale()"
     ></order-summary>
   </div>
 

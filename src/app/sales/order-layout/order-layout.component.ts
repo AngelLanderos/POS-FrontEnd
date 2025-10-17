@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -27,6 +28,9 @@ export class OrderLayoutComponent {
   productCategories = signal<ProductCategories[]>([]);
   filter = signal<number>(0);
   currentTableId = signal<number>(0);
+
+  orderIdentifier = computed(() => this.isBarSale() ? 'Venta en barra' : `Mesa #${this.currentTableId()}`)
+  isBarSale = computed(() => this.currentTableId() === 100 ? true : false);
 
   ngOnInit() {
     this.currentTableId.set(+this.activatedRoute.snapshot.paramMap.get('tableId')!);

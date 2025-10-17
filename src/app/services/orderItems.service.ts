@@ -1,6 +1,7 @@
 import { Injectable, Inject, inject } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from '@angular/common/http';
+import { Product } from "../interfaces/interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class OrderService {
 
     getOrdersItem(tableId: number) : Observable<any> {
       return this.http.post(`${this.apiUrl}/getOrderItems`, {tableId})
-    }
+    };
 
-    
-
-
+    createItemsForBarSale(products: Product[]) : Observable<any> {
+      return this.http.post(`${this.apiUrl}/createItemsForBarSale`, {products})
+    };
 
 }

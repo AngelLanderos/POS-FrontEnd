@@ -41,7 +41,6 @@ export class ProductGridComponent {
       categories: this.productCategoryService.getProductCategories(),
     }).subscribe({
       next: (results) => {
-        console.log(results);
         this.allProducts.set(results.products);
         this.productCategories.set(results.categories);
       },
@@ -53,7 +52,6 @@ export class ProductGridComponent {
 
   filterProductsEffect = effect(() => {
     const categoryId = this.filterCategory();
-    console.log({ categoryId });
     const products = this.allProducts();
 
     if (categoryId && categoryId > 0) {

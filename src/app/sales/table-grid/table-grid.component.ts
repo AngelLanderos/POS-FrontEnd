@@ -43,7 +43,7 @@ export class TableGridComponent {
 
     if(filter == 'all') return this.tables();
 
-    if(filter == 'bar_sale') this.router.navigate(['/dashboard/sales/orderSummary',1])
+    if(filter == 'bar_sale') this.router.navigate(['/dashboard/sales/orderSummary',100])
 
     return this.tables().filter(table => table.status === filter);
   }

@@ -13,6 +13,7 @@ import { CurrencyPipe } from '@angular/common';
 import { ProductCategoryService } from '../../services/productCategory.service';
 import { AccountsService } from '../../services/accounts.service';
 import Swal from 'sweetalert2';
+import { OrderService } from '../../services/orderItems.service';
 
 @Component({
   selector: 'order-summary',
@@ -21,15 +22,16 @@ import Swal from 'sweetalert2';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderSumaryComponent {
-
   productCategoryService = inject(ProductCategoryService);
   accountService = inject(AccountsService);
+  orderService = inject(OrderService);
 
   newProduct = input.required<Product | null>();
   tableNumber = input.required<number>();
+  isBarSale = input.required<boolean>();
+
   products = signal<Product[]>([]);
 
-  // ✅ Agregar producto
   addProductEffect = effect(() => {
     const product = this.newProduct();
 
@@ -52,17 +54,13 @@ export class OrderSumaryComponent {
 
   // Eliminar productos con cantidad 0
   deleteProductEffect = effect(() => {
-    this.products.update((current) =>
-      current.filter((p) => p.quantity > 0)
-    );
+    this.products.update((current) => current.filter((p) => p.quantity > 0));
   });
 
-  // ✅ Total siempre actualizado automáticamente
   total = computed(() =>
     this.products().reduce((acc, p) => acc + p.price * p.quantity, 0)
   );
 
-  // ✅ Actualizar item sin mutar el array
   updateItem(updateItem: ItemUpdate) {
     this.products.update((current) => {
       return current
@@ -72,59 +70,66 @@ export class OrderSumaryComponent {
             ? { ...item, quantity: item.quantity + updateItem.quantityUpdate }
             : item
         )
-        .filter((item) => item.quantity > 0); // 👈 limpieza directa aquí
+        .filter((item) => item.quantity > 0);
     });
-  };
+  }
 
-  createNewOrder(){
+  createNewOrder() {
+    const alertText = this.isBarSale()
+      ? 'Confirmar venta en barra'
+      : `Confirmar order para la mesa #${this.tableNumber()}`;
 
     const order = {
       products: this.products(),
       table: this.tableNumber(),
-      total: this.total()
+      total: this.total(),
     };
 
     Swal.fire({
-      title: 'Confirmación de orden',
+      title: alertText,
       icon: 'question',
       showConfirmButton: true,
       confirmButtonColor: '#166534',
       confirmButtonText: 'Confirmar',
       showCancelButton: true,
       cancelButtonColor: '#dc2626',
-      cancelButtonText: 'Cancelar'
-    }).then(res => {
-      if(res.isConfirmed){
-        this.accountService.createNewOrder(order).subscribe({
+      cancelButtonText: 'Cancelar',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        if (this.isBarSale()) {
+
+          this.orderService.createItemsForBarSale(this.products()).subscribe({
             next: (res) => {
-              console.log(res);
               //TODO: TOAST notification
               setTimeout(() => {
                 window.location.reload();
-              },500);
+              }, 500);
+            },
+            error: (error) => {
+              console.error(error);
+            },
+          });
 
+        } else {
+
+          this.accountService.createNewOrder(order).subscribe({
+            next: (res) => {
+              //TODO: TOAST notification
+              setTimeout(() => {
+                window.location.reload();
+              }, 500);
             },
             error: (error) => {
               Swal.fire({
                 title: 'Error creando orden',
-                icon: 'error'
+                icon: 'error',
               });
               console.log(error);
-            }
+            },
           });
+
+        }
       }
-    })
-
-
-
-    // this.productCategoryService.getProductCategories().subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //   },
-    //   error: (error) => {
-    //     console.log(error);
-    //   }
-    // })
+    });
   }
-
 }
