@@ -43,6 +43,8 @@ export class ProductGridComponent {
       next: (results) => {
         this.allProducts.set(results.products);
         this.productCategories.set(results.categories);
+
+        console.log(this.allProducts());
       },
       error: (error) => {
         console.error(error);

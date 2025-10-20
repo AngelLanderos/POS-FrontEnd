@@ -13,6 +13,7 @@ export interface ProductResponse {
   id: number;
   isActive: boolean;
   name: string;
+  image_url: string;
   category: ProductCategories;
 };
 
